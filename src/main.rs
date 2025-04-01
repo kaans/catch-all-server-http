@@ -19,6 +19,7 @@ struct Request {
     path: String,
     query: HashMap<String, String>,
     headers: HashMap<String, String>,
+    cookies: HashMap<String, String>,
     body: String,
 }
 
@@ -26,20 +27,19 @@ struct Request {
 async fn monitor(req: HttpRequest, body: String) -> Result<impl Responder> {
     println!("Incoming request: {:?}", req);
 
-    let mut headers: HashMap<String, String> = HashMap::new();
-    req.headers().iter().for_each(|(k, v)| { headers.insert(k.to_string(), format!("{}", v.to_str().unwrap())); });
-
-    let mut query: HashMap<String, String> = HashMap::new();
-    req.query_string().split("&").for_each(|q| {
+    let query = req.query_string().split("&").map(|q| {
         let mut s = q.split("=");
-        query.insert(s.next().unwrap_or("unknown").to_string(), s.next().unwrap_or("unknown").to_string());
-    });
+        return (s.next().unwrap_or("unknown").to_string(), s.next().unwrap_or("unknown").to_string());
+    }).collect();
 
     let result = Request {
         url: req.uri().to_string(),
         path: req.path().to_string(),
         query,
-        headers,
+        headers: req.headers().iter().map(|(k, v)| (k.to_string(), format!("{}", v.to_str().unwrap()))).collect(),
+        cookies: req.cookies().map(|s| s.iter().map(|c| {
+            (c.name().to_string(), c.value().to_string())
+        }).collect()).unwrap_or_default(),
         body
     };
 
