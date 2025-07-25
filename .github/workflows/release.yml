@@ -17,28 +17,28 @@ jobs:
             runs-on: ubuntu-20.04
             target: x86_64-unknown-linux-musl
             command: build
-            bin: mqtli
+            bin: catch-all-server-http
             archive: tar.gz
 
           - os-name: Linux-aarch64
             runs-on: ubuntu-20.04
             target: aarch64-unknown-linux-musl
             command: build
-            bin: mqtli
+            bin: catch-all-server-http
             archive: tar.gz
 
           - os-name: Windows-x86_64
             runs-on: windows-latest
             target: x86_64-pc-windows-msvc
             command: build
-            bin: mqtli.exe
+            bin: catch-all-server-http.exe
             archive: zip
 
           - os-name: macOS-x86_64
             runs-on: macOS-latest
             target: x86_64-apple-darwin
             command: build
-            bin: mqtli
+            bin: catch-all-server-http
             archive: tar.gz
 
     runs-on: ${{ matrix.platform.runs-on }}
@@ -57,15 +57,15 @@ jobs:
         uses: montudor/action-zip@v1
         if: ${{ matrix.platform.archive == 'zip' && matrix.platform.runs-on != 'windows-latest' }}
         with:
-          args: zip -qq -j mqtli-${{ matrix.platform.target }}.zip /target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} README.adoc LICENSE.md config.default.yaml
+          args: zip -qq -j cash-${{ matrix.platform.target }}.zip /target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} README.md LICENSE-MIT LICENSE-APACHE
 
       - name: Zip release for ${{ matrix.platform.target }}
         if: ${{ matrix.platform.archive == 'zip' && matrix.platform.runs-on == 'windows-latest' }}
-        run: Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }},README.adoc,LICENSE.md,config.default.yaml -DestinationPath mqtli-${{ matrix.platform.target }}.zip
+        run: Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }},README.adoc,README.md LICENSE-MIT,LICENSE-APACHE -DestinationPath cash-${{ matrix.platform.target }}.zip
 
       - name: Tar release for ${{ matrix.platform.target }}
         if: ${{ matrix.platform.archive == 'tar.gz' }}
-        run: cp target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} . && tar -czf mqtli-${{ matrix.platform.target }}.tar.gz ${{ matrix.platform.bin }} README.adoc LICENSE.md config.default.yaml && rm ${{ matrix.platform.bin }}
+        run: cp target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} . && tar -czf cash-${{ matrix.platform.target }}.tar.gz ${{ matrix.platform.bin }} README.md LICENSE-MIT LICENSE-APACHE && rm ${{ matrix.platform.bin }}
 
       - name: upload ${{ matrix.platform.target }} artifact
         uses: actions/upload-release-asset@v1
@@ -73,6 +73,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: mqtli-${{ matrix.platform.target }}.${{ matrix.platform.archive }}
-          asset_name: mqtli-${{ matrix.platform.target }}.${{ matrix.platform.archive }}
+          asset_path: cash-${{ matrix.platform.target }}.${{ matrix.platform.archive }}
+          asset_name: cash-${{ matrix.platform.target }}.${{ matrix.platform.archive }}
           asset_content_type: application/gzip
