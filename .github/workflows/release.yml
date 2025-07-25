@@ -2,6 +2,9 @@ on:
   release:
     types: [created]
 
+permissions:
+  contents: write
+  
 env:
   # Disable incremental compilation for faster from-scratch builds
   CARGO_INCREMENTAL: 0
