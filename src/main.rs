@@ -1,12 +1,14 @@
 use actix_web::{
     App, HttpRequest, HttpResponse, HttpServer, Result, delete, error, get, options, post, put, web,
 };
+use base64::prelude::*;
 use chrono::serde::ts_seconds;
 use futures::StreamExt;
 use maud::{Markup, html};
 use serde::{Serialize, Serializer};
 use std::collections::BTreeMap;
 use std::ops::Deref;
+use colored::Colorize;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -90,12 +92,15 @@ async fn parse_incoming_request(req: HttpRequest, body: web::Payload) -> Result<
 }
 
 fn print_request(request: &Request) {
-    println!("{} {}", request.method, request.url);
-    println!("Path: {}", request.path);
-    print!("Query parameters:\n{}", request.query.iter().map(|(k, v)| format!("\t{} => {}\n", k.deref(), v.deref())).collect::<String>());
-    print!("Headers:\n{}", request.headers.iter().map(|(k, v)| format!("\t{} => {}\n", k.deref(), v.deref())).collect::<String>());
-    print!("Cookies:\n{}", request.cookies.iter().map(|(k, v)| format!("\t{} => {}\n", k.deref(), v.deref())).collect::<String>());
-    println!("Body ({} bytes):\n{}", request.body.len(), String::from_utf8_lossy(request.body.to_vec().deref()));
+    println!("{} {}", request.method.green(), request.url.blue());
+    println!("{} {}", "Path:".black().on_white(), request.path.blue());
+    print!("{} ({}):\n{}", "Query parameters".black().on_white(), request.query.len().to_string().bright_magenta(), request.query.iter().map(|(k, v)| format!("  {} {} {}\n", k.deref().on_magenta(), "=>".bright_cyan(), v.deref())).collect::<String>());
+    print!("{} ({}):\n{}", "Headers:".black().on_white(), request.headers.len().to_string().bright_magenta(), request.headers.iter().map(|(k, v)| format!("  {} {} {}\n", k.deref().on_magenta(), "=>".bright_cyan(), v.deref())).collect::<String>());
+    print!("{} ({}):\n{}", "Cookies:".black().on_white(), request.cookies.len().to_string().bright_magenta(), request.cookies.iter().map(|(k, v)| format!("  {} {} {}\n", k.deref().on_magenta(), "=>".bright_cyan(), v.deref())).collect::<String>());
+
+    let body = String::from_utf8(request.body.to_vec()).unwrap_or(BASE64_STANDARD.encode(&request.body));
+
+    println!("{}\n{}", format!("Body ({} bytes):", request.body.len().to_string().bright_magenta()).black().on_white(), body);
 }
 
 fn get_web_response(result: Request) -> Markup {
