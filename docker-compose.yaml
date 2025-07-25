@@ -1,0 +1,11 @@
+services:
+  cash:
+    build:
+      dockerfile: Dockerfile
+      no_cache: true
+    ports:
+      - "127.0.0.1:8093:8092"
+    environment:
+      PORT: 8092
+      HOST: 0.0.0.0
+      USE_COLOR: true
