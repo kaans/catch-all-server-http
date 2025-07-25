@@ -10,3 +10,4 @@ services:
       HOST: 0.0.0.0
       USE_COLOR: true
       MAX_SIZE: 262144
+      BODY_FORMAT: text

@@ -1,4 +1,25 @@
-use clap::Parser;
+use std::str::FromStr;
+use clap::{Parser, ValueEnum};
+
+#[derive(ValueEnum, Default, Debug, Clone)]
+pub(crate) enum BodyFormat {
+    #[default]
+    Text,
+    Base64,
+    Hex,
+}
+
+impl FromStr for BodyFormat {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "base64" => Ok(BodyFormat::Base64),
+            "hex" => Ok(BodyFormat::Hex),
+            "text" | _ => Ok(BodyFormat::Text),
+        }
+    }
+}
 
 #[derive(Parser, Clone, Debug)]
 #[command(about, version, author)]
@@ -11,4 +32,6 @@ pub(crate) struct Args {
     pub use_color: bool,
     #[arg(short, long, env = "MAX_SIZE", default_value = "262144")]
     pub max_size: usize,
+    #[arg(short, long, env = "BODY_FORMAT", default_value = "text")]
+    pub body_format: BodyFormat,
 }
