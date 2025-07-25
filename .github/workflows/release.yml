@@ -61,7 +61,7 @@ jobs:
 
       - name: Zip release for ${{ matrix.platform.target }}
         if: ${{ matrix.platform.archive == 'zip' && matrix.platform.runs-on == 'windows-latest' }}
-        run: Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }},README.adoc,README.md LICENSE-MIT,LICENSE-APACHE -DestinationPath cash-${{ matrix.platform.target }}.zip
+        run: Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }},README.md,LICENSE-MIT,LICENSE-APACHE -DestinationPath cash-${{ matrix.platform.target }}.zip
 
       - name: Tar release for ${{ matrix.platform.target }}
         if: ${{ matrix.platform.archive == 'tar.gz' }}
