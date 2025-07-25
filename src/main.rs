@@ -1,3 +1,5 @@
+mod args;
+
 use actix_web::{
     App, HttpRequest, HttpResponse, HttpServer, Result, delete, error, get, options, post, put, web,
 };
@@ -8,11 +10,17 @@ use maud::{Markup, html};
 use serde::{Serialize, Serializer};
 use std::collections::BTreeMap;
 use std::ops::Deref;
+use clap::Parser;
 use colored::Colorize;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("Starting catch-all server on port 8092");
+    let args = args::Args::parse();
+
+    println!("Starting catch-all server on {}:{}", args.host, args.port);
+
+    colored::control::set_override(args.use_color);
+
     HttpServer::new(|| {
         App::new()
             .service(monitor_get)
@@ -21,7 +29,7 @@ async fn main() -> std::io::Result<()> {
             .service(monitor_delete)
             .service(monitor_options)
     })
-    .bind(("127.0.0.1", 8092))?
+    .bind((args.host, args.port))?
     .run()
     .await
 }
@@ -75,7 +83,7 @@ async fn monitor_options(req: HttpRequest, body: web::Payload) -> Result<HttpRes
 }
 
 async fn parse_incoming_request(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
-    println!("=== Incoming request\n");
+    println!("{}\n", "=== Incoming request".on_bright_yellow());
 
     let request = parse_request(req, body).await?;
 
