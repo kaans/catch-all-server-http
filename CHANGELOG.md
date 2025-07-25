@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/kaans/catch-all-server-http/compare/v0.1.1...v0.1.2) (2025-07-25)
+
+
+### Bug Fixes
+
+* wrong workflow format ([cbfd66b](https://github.com/kaans/catch-all-server-http/commit/cbfd66b83fdeb92e2438dd87164b425b89b7f2e9))
+
 ## [0.1.1](https://github.com/kaans/catch-all-server-http/compare/v0.1.0...v0.1.1) (2025-07-25)
 
 
