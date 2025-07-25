@@ -21,8 +21,10 @@ async fn main() -> std::io::Result<()> {
 
     colored::control::set_override(args.use_color);
 
-    HttpServer::new(|| {
+    let args_data = args.clone();
+    HttpServer::new(move || {
         App::new()
+            .app_data(web::Data::new(args_data.clone()))
             .service(monitor_get)
             .service(monitor_post)
             .service(monitor_put)
@@ -55,48 +57,52 @@ struct Request {
     body: web::BytesMut,
 }
 
-const MAX_SIZE: usize = 262_144;
-
 #[post("/{path:.*}")]
-async fn monitor_post(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
-    parse_incoming_request(req, body).await
+async fn monitor_post(req: HttpRequest, body: web::Payload, args: web::Data<args::Args>) -> Result<HttpResponse> {
+    parse_incoming_request(req, body, args).await
 }
 
 #[get("/{path:.*}")]
-async fn monitor_get(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
-    parse_incoming_request(req, body).await
+async fn monitor_get(req: HttpRequest, body: web::Payload, args: web::Data<args::Args>) -> Result<HttpResponse> {
+    parse_incoming_request(req, body, args).await
 }
 
 #[put("/{path:.*}")]
-async fn monitor_put(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
-    parse_incoming_request(req, body).await
+async fn monitor_put(req: HttpRequest, body: web::Payload, args: web::Data<args::Args>) -> Result<HttpResponse> {
+    parse_incoming_request(req, body, args).await
 }
 
 #[delete("/{path:.*}")]
-async fn monitor_delete(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
-    parse_incoming_request(req, body).await
+async fn monitor_delete(req: HttpRequest, body: web::Payload, args: web::Data<args::Args>) -> Result<HttpResponse> {
+    parse_incoming_request(req, body, args).await
 }
 
 #[options("/{path:.*}")]
-async fn monitor_options(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
-    parse_incoming_request(req, body).await
+async fn monitor_options(req: HttpRequest, body: web::Payload, args: web::Data<args::Args>) -> Result<HttpResponse> {
+    parse_incoming_request(req, body, args).await
 }
 
-async fn parse_incoming_request(req: HttpRequest, body: web::Payload) -> Result<HttpResponse> {
+async fn parse_incoming_request(req: HttpRequest, body: web::Payload, args: web::Data<args::Args>) -> Result<HttpResponse> {
     println!("{}\n", "=== Incoming request".on_bright_yellow());
 
-    let request = parse_request(req, body).await?;
+    match parse_request(req, body, args).await {
+        Ok(request) => {
+            print_request(&request);
 
-    print_request(&request);
-
-    Ok(match request.headers.get("accept") {
-        Some(content_type) if content_type.contains("application/json") => {
-            HttpResponse::Ok().json(web::Json(request))
+            Ok(match request.headers.get("accept") {
+                Some(content_type) if content_type.contains("application/json") => {
+                    HttpResponse::Ok().json(web::Json(request))
+                }
+                None | Some(_) => HttpResponse::Ok()
+                    .content_type("text/html")
+                    .body(get_web_response(request)),
+            })
         }
-        None | Some(_) => HttpResponse::Ok()
-            .content_type("text/html")
-            .body(get_web_response(request)),
-    })
+        Err(err) => {
+            println!("{}: {}\n", "Error while processing the request".on_bright_red(), err);
+            Ok(HttpResponse::BadRequest().finish())
+        }
+    }
 }
 
 fn print_request(request: &Request) {
@@ -150,7 +156,8 @@ fn get_web_response(result: Request) -> Markup {
     }
 }
 
-async fn parse_request(req: HttpRequest, mut payload: web::Payload) -> Result<Request> {
+async fn parse_request(req: HttpRequest, mut payload: web::Payload,
+                       args: web::Data<args::Args>) -> Result<Request> {
     let query = req
         .query_string()
         .split("&")
@@ -169,8 +176,8 @@ async fn parse_request(req: HttpRequest, mut payload: web::Payload) -> Result<Re
     while let Some(chunk) = payload.next().await {
         let chunk = chunk?;
         // limit max size of in-memory payload
-        if (body.len() + chunk.len()) > MAX_SIZE {
-            return Err(error::ErrorBadRequest("overflow"));
+        if (body.len() + chunk.len()) > args.max_size {
+            return Err(error::ErrorBadRequest(format!("Overflow, max size of {} bytes exceeded", args.max_size)));
         }
         body.extend_from_slice(&chunk);
     }

@@ -1,6 +1,6 @@
 use clap::Parser;
 
-#[derive(Parser, Debug)]
+#[derive(Parser, Clone, Debug)]
 #[command(about, version, author)]
 pub(crate) struct Args {
     #[arg(short, long, env = "PORT", default_value = "8092")]
@@ -9,4 +9,6 @@ pub(crate) struct Args {
     pub host: String,
     #[arg(short, long, env = "USE_COLOR", default_value = "true")]
     pub use_color: bool,
+    #[arg(short, long, env = "MAX_SIZE", default_value = "262144")]
+    pub max_size: usize,
 }
