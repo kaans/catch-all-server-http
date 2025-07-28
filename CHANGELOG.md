@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/kaans/catch-all-server-http/compare/v0.1.2...v0.1.3) (2025-07-28)
+
+
+### Bug Fixes
+
+* use latest ubuntu image to build linux binaries ([2274d6c](https://github.com/kaans/catch-all-server-http/commit/2274d6c51fa2b328485bc850294d4b02a63c54ec))
+
 ## [0.1.2](https://github.com/kaans/catch-all-server-http/compare/v0.1.1...v0.1.2) (2025-07-25)
 
 
