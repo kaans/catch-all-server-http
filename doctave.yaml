@@ -1,0 +1,9 @@
+---
+title: "CASH - Catch All Server HTTP"
+
+base_path: /catch-all-server-http
+
+navigation:
+  - path: docs/quickstart.md
+  - path: docs/config.md
+  - path: docs/docker.md
