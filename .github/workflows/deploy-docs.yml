@@ -18,7 +18,7 @@ jobs:
       - name: 'Build and deploy'
         shell: bash
         run: |
-          curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew install doctave/doctave/doctave
           doctave build --release --allow-failed-checks
 
