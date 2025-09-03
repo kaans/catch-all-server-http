@@ -1,0 +1,8 @@
+services:
+  cash:
+    build:
+      dockerfile: Dockerfile
+      no_cache: true
+    image: !reset null
+    ports:
+      - "127.0.0.1:8093:8092"

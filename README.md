@@ -6,7 +6,7 @@ Dual-licensed under [Apache 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT).
 
 ---
 
-![Screenshot of cash](/doc/screenshot.png)
+![Screenshot of cash](/docs/doc/screenshot.png)
 
 ---
 
@@ -30,7 +30,7 @@ For help, list all command line parameters:
 cargo run --release -- -h
 ```
 
-## Docker (compose)
+## Docker
 
 The [Dockerfile](Dockerfile) produces and image that can be used
 to start a container in which the *cash* server runs.
@@ -46,6 +46,8 @@ Start a container and expose *cash* on port 8093:
 ```bash
 docker run -p 127.0.0.1:8093:8092 cash
 ```
+
+## Docker Compose
 
 Run the container (in the background `-d`) using [docker compose](docker-compose.yaml):
 

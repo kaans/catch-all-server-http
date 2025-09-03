@@ -1,13 +1,9 @@
 services:
   cash:
-    build:
-      dockerfile: Dockerfile
-      no_cache: true
+    image: ghcr.io/kaans/catch-all-server-http:latest
     ports:
-      - "127.0.0.1:8093:8092"
+      - "127.0.0.1:8092:8092"
     environment:
-      PORT: 8092
-      HOST: 0.0.0.0
       USE_COLOR: true
       MAX_SIZE: 262144
       BODY_FORMAT: text
