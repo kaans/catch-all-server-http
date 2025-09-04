@@ -2,7 +2,7 @@
 
 > **catch-all server for analyzing HTTP requests**
 
-Dual-licensed under [Apache 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT).
+cash is a lightweight, zero‑dependency catch‑all HTTP server that accepts any request and immediately shows you everything about it. It’s perfect for debugging webhooks, testing HTTP clients, or inspecting what your app actually sends over the wire. Configure host/port and how request bodies are displayed (text, base64, hex), and view responses as JSON or HTML via the Accept header. Designed for safe local debugging: HTTP only (no TLS), with Docker and docker‑compose support.
 
 ---
 
@@ -102,3 +102,7 @@ Currently, these formats are supported:
 
 Set the value of the `Accept` header to one of these to format
 the response body in the corresponding format.
+
+## License
+
+Dual-licensed under [Apache 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT).
