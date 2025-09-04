@@ -6,7 +6,7 @@ Dual-licensed under [Apache 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT).
 
 ---
 
-![Screenshot of cash](/docs/doc/screenshot.png)
+![Screenshot of cash](/docs/_include/assets/screenshot.png)
 
 ---
 
