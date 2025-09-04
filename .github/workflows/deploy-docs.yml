@@ -20,7 +20,7 @@ jobs:
       - name: 'Build and deploy'
         shell: bash
         run: |
-          cargo install --git https://github.com/Doctave/doctave --tag 0.4.2
+          RUSTFLAGS="$RUSTFLAGS -A dead_code" cargo install --git https://github.com/Doctave/doctave --tag 0.4.2
           doctave build --release --allow-failed-checks
 
       - name: GitHub Pages
