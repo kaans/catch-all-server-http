@@ -5,6 +5,8 @@
 cash — catch‑all HTTP server for inspecting requests
 ====================================================
 
+![Latest version](https://img.shields.io/github/v/release/kaans/catch-all-server-http)
+
 cash is a lightweight, zero‑dependency tool to receive any HTTP request and immediately see everything about it. It’s ideal for debugging webhooks, testing clients, and exploring what your app is actually sending over the wire.
 
 ![Project screenshot placeholder](assets/screenshot.png)
