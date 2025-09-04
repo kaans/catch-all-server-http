@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install build-essential procps curl file git
-          curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+          curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install.sh
           chmod +x install.sh
           ./install.sh
           brew install doctave/doctave/doctave
