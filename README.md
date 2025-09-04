@@ -1,6 +1,4 @@
-# cash
-
-> **catch-all server for analyzing HTTP requests**
+# CASH - catch-all server for analyzing HTTP requests
 
 cash is a lightweight, zero‑dependency catch‑all HTTP server that accepts any request and immediately shows you everything about it. It’s perfect for debugging webhooks, testing HTTP clients, or inspecting what your app actually sends over the wire. Configure host/port and how request bodies are displayed (text, base64, hex), and view responses as JSON or HTML via the Accept header. Designed for safe local debugging: HTTP only (no TLS), with Docker and docker‑compose support.
 
