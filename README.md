@@ -12,7 +12,13 @@ Dual-licensed under [Apache 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT).
 
 ## Build and run
 
-Build the executable `catch-all-server-http(.exe)` (find it in the folder `target/release`):
+Prefer prebuilt binaries? Download for Windows, Linux, and macOS (including ARM64) from Releases:
+https://github.com/kaans/catch-all-server-http/releases
+
+- Windows (PowerShell): `./catch-all-server-http.exe --help`
+- Linux/macOS: `./catch-all-server-http --help`
+
+Build the executable `catch-all-server-http(.exe)` yourself (find it in `target/release`):
 
 ```bash
 cargo build --release

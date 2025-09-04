@@ -29,9 +29,10 @@ What it does
 
 Quick start
 -----------
-- Build: cargo build --release
-- Run: cargo run --release
-- Help: cargo run --release -- -h
+- Download a prebuilt binary (Windows, Linux, macOS incl. ARM64): https://github.com/kaans/catch-all-server-http/releases
+- Run: `./catch-all-server-http` (or `./catch-all-server-http.exe` on Windows)
+- Help: `./catch-all-server-http --help`
+- Or build from source: `cargo build --release`
 
 Configuration via CLI or environment
 ------------------------------------

@@ -11,6 +11,7 @@ Prerequisites
 -------------
 - Option A: Rust toolchain (cargo) installed
 - Option B: Docker or Docker Desktop
+- Option D: None (download prebuilt binary)
 
 Option A — Run locally with Cargo
 ---------------------------------
@@ -43,6 +44,14 @@ Option C — One‑liner with Docker Compose
 ```bash
 docker compose up -d
 ```
+
+Option D — Download prebuilt binaries
+-------------------------------------
+- Windows, Linux, macOS (including ARM64) binaries are available on the Releases page:
+  https://github.com/kaans/catch-all-server-http/releases
+- Download the asset for your platform, extract if needed, then run the binary:
+  - Windows (PowerShell): `./catch-all-server-http.exe --help`
+  - Linux/macOS: `./catch-all-server-http --help`
 
 Verify it works
 ---------------
