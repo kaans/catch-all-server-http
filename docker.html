@@ -1,0 +1,275 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Docker &amp; Docker Compose</title>
+    <meta name="description" content="Documentation for CASH - Catch All Server HTTP">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/catch-all-server-http/assets/normalize.css?v=1757074149"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/catch-all-server-http/assets/doctave-style.css?v=1757074149"
+        media="screen" />
+    <link rel="stylesheet" type="text/css" href="/catch-all-server-http/assets/katex.css?v=1757074149" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/catch-all-server-http/assets/prism-ghcolors.css?v=1757074149"
+        media="screen" />
+
+    <script>
+        var DOCTAVE_TIMESTAMP = "1757074149";
+        var BASE_PATH = "/catch-all-server-http/";
+        var color = localStorage.getItem('doctave-color')
+
+        if (color === 'dark') {
+            document.getElementsByTagName('html')[0].classList.remove('light');
+            document.getElementsByTagName('html')[0].classList.add('dark');
+        } else {
+            document.getElementsByTagName('html')[0].classList.remove('dark');
+            document.getElementsByTagName('html')[0].classList.add('light');
+        }
+    </script>
+
+    
+</head>
+
+<body>
+    <label for='menu-toggle-switch' class='menu-toggle-button'>
+        ☰
+    </label>
+    <input type="checkbox" id="menu-toggle-switch" value='0' />
+    <div class='page'>
+        <div class='header'>
+            <div class='logo'>
+                
+                <h2 class='project-name'>
+                    <a href="/catch-all-server-http/">
+                        CASH - Catch All Server HTTP
+                    </a>
+                </h2>
+            </div>
+            <div class='search'>
+                <form id='search-form'>
+    <input type='text' id='search-box' autocomplete="off" placeholder="Search..."></input>
+    <span class='search-icon'>S</span>
+    <ul id='search-results'></ul>
+</form>
+
+            </div>
+            <div class='header-dummy-right'>
+            </div>
+        </div>
+        <div class='container'>
+            <div class='sidebar-left'>
+                <nav class='site-nav'>
+    <ul>
+        
+            <li><a href="/catch-all-server-http/quickstart">Quickstart</a></li>
+            
+        
+            <li><a href="/catch-all-server-http/config">Configuration</a></li>
+            
+        
+            <li><a class="active" href="/catch-all-server-http/docker">Docker &amp; Docker Compose</a></li>
+            
+        
+    </ul>
+    <span id='light-dark-mode-switch'>
+        <svg xmlns="http://www.w3.org/2000/svg" id="dark-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="light-mode-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+    </span>
+</nav>
+
+            </div>
+            <div class='doctave-content'>
+                <h1 id="docker-usage-guide">Docker usage guide</h1>
+<p>This guide explains how to run cash using Docker or Docker Compose.</p>
+<h2 id="running-with-plain-docker">Running with plain Docker</h2>
+<ol>
+<li>Build the image and tag it as cash:</li>
+</ol>
+<pre><code class="language-bash">docker build -t cash .
+</code></pre>
+<ol start="2">
+<li>Run a container and map host port 8093 to the container’s 8092:</li>
+</ol>
+<pre><code class="language-bash">docker run --rm -p 127.0.0.1:8093:8092 cash
+</code></pre>
+<ol start="3">
+<li>Send a request to the server (from another terminal):</li>
+</ol>
+<pre><code class="language-bash">curl http://127.0.0.1:8093
+</code></pre>
+<ol start="4">
+<li>Stop the container with Ctrl+C (or it will exit when the process ends if not detached).</li>
+</ol>
+<h2 id="overriding-configuration-with-docker">Overriding configuration with Docker</h2>
+<ul>
+<li>Change the port published on the host (left side of the mapping):</li>
+</ul>
+<pre><code class="language-bash">docker run --rm -p 127.0.0.1:9000:8092 cash
+</code></pre>
+<ul>
+<li>Change server settings via environment variables:</li>
+</ul>
+<pre><code class="language-bash">docker run --rm -p 127.0.0.1:8093:8092 -e BODY_FORMAT=hex -e MAX_SIZE=1048576 cash
+</code></pre>
+<ul>
+<li>Bind to all host interfaces (be careful; exposes to your network):</li>
+</ul>
+<pre><code class="language-bash">docker run --rm -p 0.0.0.0:8093:8092 cash
+</code></pre>
+<h2 id="running-with-docker-compose">Running with Docker Compose</h2>
+<p>There are two ways to run with Docker Compose:</p>
+<p>A) Use the published image (pull from GitHub Container Registry)</p>
+<ul>
+<li>This uses the default docker-compose.yaml, which references the prebuilt image:
+<ul>
+<li>Image: ghcr.io/kaans/catch-all-server-http:latest</li>
+<li>Published port: 127.0.0.1:8092 -&gt; container 8092</li>
+</ul>
+</li>
+<li>Commands:</li>
+</ul>
+<pre><code class="language-bash"># start detached using the published image
+docker compose up -d
+
+# follow logs
+docker compose logs -f
+
+# send a request
+curl http://127.0.0.1:8092
+
+# stop and remove
+docker compose down
+</code></pre>
+<p>B) Use the development override (build from local source)</p>
+<ul>
+<li>This uses docker-compose.dev.yaml to override the image with a local build and a different host port (8093).</li>
+<li>Commands:</li>
+</ul>
+<pre><code class="language-bash"># start detached, building from local Dockerfile and using dev overrides
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d --build
+
+# follow logs
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml logs -f
+
+# send a request (dev override publishes 127.0.0.1:8093)
+curl http://127.0.0.1:8093
+
+# stop and remove
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down
+</code></pre>
+<h2 id="customizing-docker-compose.yaml">Customizing docker-compose.yaml</h2>
+<ul>
+<li>Change the host port published (e.g., 8080 -&gt; 8092 inside):</li>
+</ul>
+<pre><code class="language-yaml">services:
+  cash:
+    ports:
+      - "127.0.0.1:8080:8092"
+</code></pre>
+<ul>
+<li>Override environment variables:</li>
+</ul>
+<pre><code class="language-yaml">services:
+  cash:
+    environment:
+      BODY_FORMAT: base64
+      MAX_SIZE: 1048576
+</code></pre>
+<ul>
+<li>Build without cache when iterating locally:</li>
+</ul>
+<pre><code class="language-yaml">services:
+  cash:
+    build:
+      dockerfile: Dockerfile
+      no_cache: true
+</code></pre>
+<h2 id="notes-and-troubleshooting">Notes and troubleshooting</h2>
+<ul>
+<li>If you cannot reach the service:
+<ul>
+<li>Ensure you are calling the correct published host port:
+<ul>
+<li>Using published image (docker-compose.yaml): 8092</li>
+<li>Using dev override (docker-compose.dev.yaml): 8093</li>
+</ul>
+</li>
+<li>On Linux, 127.0.0.1 binding limits access to the local machine. Use 0.0.0.0 if you need LAN access (only in trusted environments).</li>
+</ul>
+</li>
+<li>On Windows with WSL2 or Docker Desktop, localhost port publishing generally works as shown.</li>
+<li>TLS/SSL is intentionally not supported; use http:// only.</li>
+</ul>
+
+            </div>
+            <div class='sidebar-right'>
+                <div class='page-nav' id='page-nav'>
+                    <p class='page-nav-header'>On this page</p>
+                    <ul>
+                        
+                        <li class='page-nav-level-1'>
+                            <a href='#docker-usage-guide'>Docker usage guide</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#running-with-plain-docker'>Running with plain Docker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#overriding-configuration-with-docker'>Overriding configuration with Docker</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#running-with-docker-compose'>Running with Docker Compose</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#customizing-docker-compose.yaml'>Customizing docker-compose.yaml</a>
+                        </li>
+                        
+                        <li class='page-nav-level-2'>
+                            <a href='#notes-and-troubleshooting'>Notes and troubleshooting</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class='wave-container'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill-opacity="0.35"
+                        d="M0,192L60,213.3C120,235,240,277,360,277.3C480,277,600,235,720,192C840,149,960,107,1080,122.7C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.5"
+                        d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,229.3C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                    <path fill-opacity="0.2"
+                        d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,186.7C840,203,960,181,1080,186.7C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+                    </path>
+                </svg>
+                <p>Powered by <a href='https://cli.doctave.com' target='_blank'>Doctave</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/catch-all-server-http/assets/katex.js?v=1757074149"></script>
+    <script type="text/javascript" src="/catch-all-server-http/assets/mermaid.js?v=1757074149"></script>
+    <script type="text/javascript" src="/catch-all-server-http/assets/elasticlunr.js?v=1757074149"></script>
+    <script type="text/javascript" src="/catch-all-server-http/assets/prism.js?v=1757074149"></script>
+    <script type="text/javascript" src="/catch-all-server-http/assets/doctave-app.js?v=1757074149"></script>
+
+    
+</body>
+
+</html>
