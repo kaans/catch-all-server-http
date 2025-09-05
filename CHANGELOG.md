@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0](https://github.com/kaans/catch-all-server-http/compare/v0.1.3...v0.2.0) (2025-09-05)
+
+
+### Features
+
+* split docker compose file into prod and dev ([5b3645c](https://github.com/kaans/catch-all-server-http/commit/5b3645c54a62382aa55b3af12b569e880a2fb9aa))
+
+
+### Bug Fixes
+
+* doc workflow install brew ([b5c18e5](https://github.com/kaans/catch-all-server-http/commit/b5c18e5ce23f31ba9b34d1743c448971595b7572))
+* doc workflow install brew ([7c382e8](https://github.com/kaans/catch-all-server-http/commit/7c382e8279c6de9059a0cbee23cdaff3b6de307a))
+* doc workflow install brew prerequisits ([f6b5b7f](https://github.com/kaans/catch-all-server-http/commit/f6b5b7f5e6a53098907757ea6ae1ac8f12cb6d9b))
+* doc workflow syntax ([df24240](https://github.com/kaans/catch-all-server-http/commit/df24240233af3ed2b51029a0d2144248d5eb3819))
+
 ## [0.1.3](https://github.com/kaans/catch-all-server-http/compare/v0.1.2...v0.1.3) (2025-07-28)
 
 
